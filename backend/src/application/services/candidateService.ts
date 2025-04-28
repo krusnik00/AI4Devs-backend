@@ -3,6 +3,7 @@ import { validateCandidateData } from '../validator';
 import { Education } from '../../domain/models/Education';
 import { WorkExperience } from '../../domain/models/WorkExperience';
 import { Resume } from '../../domain/models/Resume';
+import { Application } from '../../domain/models/Application';
 
 export const addCandidate = async (candidateData: any) => {
     try {
@@ -63,3 +64,21 @@ export const findCandidateById = async (id: number): Promise<Candidate | null> =
         throw new Error('Error al recuperar el candidato');
     }
 };
+
+export const getCandidatesByPositionService = async (positionId: number) => {
+    try {
+        const candidates = await Application.findByCandidateId(positionId);
+        return candidates;
+    } catch (error) {
+        console.error('Error al obtener los candidatos por posición:', error);
+        throw new Error('Error al recuperar los candidatos por posición');
+    }
+};
+  export const updateCandidateStageService = async (candidateId: number, currentInterviewStep: number) => {
+    try {
+      await Application.updateStageByCandidateId(candidateId, currentInterviewStep);
+    } catch (error) {
+      console.error('Error al actualizar la etapa del candidato:', error);
+      throw new Error('Error al actualizar la etapa del candidato');
+    }
+  };
